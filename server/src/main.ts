@@ -11,7 +11,6 @@ async function bootstrap() {
     .setTitle('Cinema API')
     .setDescription('Cinema API for lab-4 description')
     .setVersion('1.0')
-    .addTag('cinema')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);

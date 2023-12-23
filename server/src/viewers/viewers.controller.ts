@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ViewersService } from './viewers.service';
 import { CreateViewerDto } from './dto/create-viewer.dto';
 import { UpdateViewerDto } from './dto/update-viewer.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Viewers')
 @Controller('viewers')
 export class ViewersController {
   constructor(private readonly viewersService: ViewersService) {}
@@ -19,16 +29,16 @@ export class ViewersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.viewersService.findOne(+id);
+    return this.viewersService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateViewerDto: UpdateViewerDto) {
-    return this.viewersService.update(+id, updateViewerDto);
+    return this.viewersService.update(id, updateViewerDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.viewersService.remove(+id);
+    return this.viewersService.remove(id);
   }
 }
