@@ -13,9 +13,11 @@ export class Seller {
 
   @Prop({
     required: true,
-    enum: ['male', 'female', 'other'],
+    enum: ['male', 'female'],
   })
   gender: string;
 }
 
-export const SellerSchema = SchemaFactory.createForClass(Seller);
+export const SellerSchema = SchemaFactory.createForClass(Seller).set('toJSON', {
+  versionKey: false,
+});

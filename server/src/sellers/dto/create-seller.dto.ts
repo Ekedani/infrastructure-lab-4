@@ -1,16 +1,23 @@
-import { IsDate, IsIn, IsString } from 'class-validator';
+import { IsDateString, IsIn, IsString, Length } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateSellerDto {
+  @ApiProperty()
   @IsString()
+  @Length(2, 35)
   firstName: string;
 
+  @ApiProperty()
   @IsString()
+  @Length(2, 35)
   lastName: string;
 
-  @IsDate()
+  @ApiProperty()
+  @IsDateString()
   birthDate: Date;
 
+  @ApiProperty()
   @IsString()
-  @IsIn(['male', 'female', 'other'])
+  @IsIn(['male', 'female'])
   gender: string;
 }

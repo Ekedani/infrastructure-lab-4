@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSellerDto } from './dto/create-seller.dto';
 import { UpdateSellerDto } from './dto/update-seller.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -23,7 +23,7 @@ export class SellersService {
   async findOne(id: string): Promise<Seller> {
     const seller = await this.sellerModel.findById(id).exec();
     if (!seller) {
-      throw new Error(`Seller #${id} not found`);
+      throw new NotFoundException(`Seller #${id} not found`);
     }
     return seller;
   }
@@ -33,7 +33,7 @@ export class SellersService {
       .findOneAndUpdate({ _id: id }, { $set: updateSellerDto }, { new: true })
       .exec();
     if (!seller) {
-      throw new Error(`Seller #${id} not found`);
+      throw new NotFoundException(`Seller #${id} not found`);
     }
     return seller;
   }
@@ -41,7 +41,7 @@ export class SellersService {
   async remove(id: string): Promise<Seller> {
     const seller = await this.sellerModel.findByIdAndDelete(id).exec();
     if (!seller) {
-      throw new Error(`Seller #${id} not found`);
+      throw new NotFoundException(`Seller #${id} not found`);
     }
     return seller.value;
   }
