@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
-import { CreateTicketDto } from './dto/create-ticket.dto';
+import { CreateTicketsDto } from './dto/create-tickets.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -18,8 +18,8 @@ export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
   @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
-    return this.ticketsService.create(createTicketDto);
+  create(@Body() createTicketsDto: CreateTicketsDto) {
+    return this.ticketsService.createMany(createTicketsDto);
   }
 
   @Get()
@@ -29,16 +29,16 @@ export class TicketsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ticketsService.findOne(+id);
+    return this.ticketsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return this.ticketsService.update(+id, updateTicketDto);
+    return this.ticketsService.update(id, updateTicketDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.ticketsService.remove(+id);
+    return this.ticketsService.remove(id);
   }
 }

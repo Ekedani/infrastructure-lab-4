@@ -17,8 +17,7 @@ CREATE TABLE "order" (
 CREATE TABLE "ticket" (
                           id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
                           order_id UUID REFERENCES "order"(id),
-                          start_date DATE,
-                          start_time TIME,
+                          start_datetime TIMESTAMP,
                           seat INT,
                           movie_title VARCHAR(255)
 );

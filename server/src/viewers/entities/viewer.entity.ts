@@ -5,13 +5,13 @@ export class Viewer {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: '255' })
   firstName: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: '255' })
   lastName: string;
 
-  @Column()
+  @Column({ type: 'date' })
   birthDate: Date;
 
   @Column({

@@ -1,4 +1,4 @@
-import { IsDateString, IsIn, IsString, Length } from 'class-validator';
+import { IsDateString, IsIn, IsString, Length, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateSellerDto {
