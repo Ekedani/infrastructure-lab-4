@@ -7,6 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Viewer } from './viewers/entities/viewer.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { Ticket } from './tickets/entities/ticket.entity';
+import { Order } from './tickets/entities/order.entity';
 
 @Module({
   imports: [
@@ -30,7 +32,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        entities: [Viewer],
+        entities: [Viewer, Ticket, Order],
         namingStrategy: new SnakeNamingStrategy(),
       }),
     }),

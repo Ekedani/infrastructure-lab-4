@@ -5,12 +5,10 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
-  Patch,
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
-import { UpdateOrderDto } from '../dto/update-order.dto';
 import { CreateOrderDto } from '../dto/create-order.dto';
 
 @ApiTags('Orders')
@@ -31,14 +29,6 @@ export class OrdersController {
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
     return this.ordersService.create(createOrderDto);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateOrderDto: UpdateOrderDto,
-  ) {
-    return this.ordersService.update(id, updateOrderDto);
   }
 
   @Delete(':id')
