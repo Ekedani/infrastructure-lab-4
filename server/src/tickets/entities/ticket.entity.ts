@@ -9,7 +9,7 @@ export class Ticket {
   orderId: string;
 
   @Column({ type: 'timestamp' })
-  startDatetime: Date;
+  startsAt: Date;
 
   @Column({ type: 'int' })
   seat: number;

@@ -11,9 +11,10 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateTicketDto {
   @ApiProperty({
     description: 'The start date and time of the movie',
+    format: 'date-time',
   })
   @IsDateString()
-  startDatetime: Date;
+  startsAt: Date;
 
   @ApiProperty({
     description: 'The seat number',
@@ -27,6 +28,8 @@ export class CreateTicketDto {
 
   @ApiProperty({
     description: 'The title of the movie',
+    minLength: 1,
+    maxLength: 255,
   })
   @IsString()
   @Length(1, 255)

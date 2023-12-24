@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { Order } from '../entities/order.entity';
-import { Repository } from 'typeorm';
+import { Between, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TicketsService } from '../tickets.service';
+import { FindOrdersDto } from '../dto/find-orders.dto';
 
 @Injectable()
 export class OrdersService {
@@ -26,8 +27,13 @@ export class OrdersService {
     return newOrder;
   }
 
-  findAll() {
-    return this.orderRepository.find();
+  findAll(findOrdersDto: FindOrdersDto) {
+    return this.orderRepository.find({
+      where: {
+        viewerId: findOrdersDto.viewerId,
+        createdAt: this.getWhereOrderCreatedAt(findOrdersDto),
+      },
+    });
   }
 
   findOne(id: string) {
@@ -42,5 +48,16 @@ export class OrdersService {
     const order = await this.findOne(id);
     await this.ticketService.removeOrder(id);
     return this.orderRepository.remove(order);
+  }
+
+  private getWhereOrderCreatedAt(findOrdersDto: FindOrdersDto) {
+    const { createdBefore, createdAfter } = findOrdersDto;
+    return createdBefore && createdAfter
+      ? Between(createdAfter, createdBefore)
+      : createdAfter
+        ? MoreThanOrEqual(createdAfter)
+        : createdBefore
+          ? LessThanOrEqual(createdBefore)
+          : undefined;
   }
 }

@@ -2,9 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTicketsDto } from './dto/create-tickets.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { Ticket } from './entities/ticket.entity';
-import { Repository } from 'typeorm';
+import { Between, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTicketDto } from './dto/create-ticket.dto';
+import { FindTicketsDto } from './dto/find-tickets.dto';
 
 @Injectable()
 export class TicketsService {
@@ -23,8 +24,13 @@ export class TicketsService {
     return Promise.all(tickets);
   }
 
-  findAll() {
-    return this.ticketRepository.find();
+  findAll(findTicketsDto: FindTicketsDto) {
+    return this.ticketRepository.find({
+      where: {
+        orderId: findTicketsDto.orderId,
+        startsAt: this.getWhereMovieStartsAt(findTicketsDto),
+      },
+    });
   }
 
   async findOne(id: string) {
@@ -60,5 +66,16 @@ export class TicketsService {
       ticket.orderId = null;
     });
     return this.ticketRepository.save(tickets);
+  }
+
+  private getWhereMovieStartsAt(findTicketsDto: FindTicketsDto) {
+    const { createdBefore, createdAfter } = findTicketsDto;
+    return createdBefore && createdAfter
+      ? Between(createdAfter, createdBefore)
+      : createdAfter
+        ? MoreThanOrEqual(createdAfter)
+        : createdBefore
+          ? LessThanOrEqual(createdBefore)
+          : undefined;
   }
 }

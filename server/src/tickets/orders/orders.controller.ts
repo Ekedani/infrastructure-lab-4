@@ -6,10 +6,12 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from '../dto/create-order.dto';
+import { FindOrdersDto } from '../dto/find-orders.dto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -17,8 +19,8 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
+  findAll(@Query() findOrdersDto: FindOrdersDto) {
+    return this.ordersService.findAll(findOrdersDto);
   }
 
   @Get(':id')

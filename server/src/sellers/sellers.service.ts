@@ -4,6 +4,7 @@ import { UpdateSellerDto } from './dto/update-seller.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Seller } from './schemas/seller.schema';
+import { FindSellersDto } from './dto/find-sellers.dto';
 
 @Injectable()
 export class SellersService {
@@ -16,8 +17,14 @@ export class SellersService {
     return seller.save();
   }
 
-  findAll(): Promise<Seller[]> {
-    return this.sellerModel.find().exec();
+  findAll(findSellersDto: FindSellersDto): Promise<Seller[]> {
+    return this.sellerModel
+      .find({
+        firstName: { $regex: findSellersDto.firstName || '', $options: 'i' },
+        lastName: { $regex: findSellersDto.lastName || '', $options: 'i' },
+        gender: { $regex: findSellersDto.gender || '', $options: 'i' },
+      })
+      .exec();
   }
 
   async findOne(id: string): Promise<Seller> {

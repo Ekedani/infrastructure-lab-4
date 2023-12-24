@@ -7,11 +7,13 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketsDto } from './dto/create-tickets.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { FindTicketsDto } from './dto/find-tickets.dto';
 
 @ApiTags('Tickets')
 @Controller('tickets')
@@ -24,8 +26,8 @@ export class TicketsController {
   }
 
   @Get()
-  findAll() {
-    return this.ticketsService.findAll();
+  findAll(@Query() findTicketsDto: FindTicketsDto) {
+    return this.ticketsService.findAll(findTicketsDto);
   }
 
   @Get(':id')

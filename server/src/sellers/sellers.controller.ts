@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { SellersService } from './sellers.service';
 import { CreateSellerDto } from './dto/create-seller.dto';
@@ -13,6 +14,7 @@ import { UpdateSellerDto } from './dto/update-seller.dto';
 import { ParseObjectIdPipe } from '../shared/pipes/ParseObjectIDPipe.pipe';
 import { ApiTags } from '@nestjs/swagger';
 import { Seller } from './schemas/seller.schema';
+import { FindSellersDto } from './dto/find-sellers.dto';
 
 @ApiTags('Sellers')
 @Controller('sellers')
@@ -25,8 +27,8 @@ export class SellersController {
   }
 
   @Get()
-  findAll(): Promise<Seller[]> {
-    return this.sellersService.findAll();
+  findAll(@Query() findSellersDto: FindSellersDto): Promise<Seller[]> {
+    return this.sellersService.findAll(findSellersDto);
   }
 
   @Get(':id')
