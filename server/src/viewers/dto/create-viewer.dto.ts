@@ -1,22 +1,44 @@
-import { IsDateString, IsIn, IsString, Length } from 'class-validator';
+import {
+  IsDateString,
+  IsIn,
+  IsString,
+  Length,
+  MaxLength,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateViewerDto {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The first name of the viewer',
+    minLength: 2,
+    maxLength: 35,
+  })
   @IsString()
   @Length(2, 35)
   firstName: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The last name of the viewer',
+    minLength: 2,
+    maxLength: 35,
+  })
   @IsString()
   @Length(2, 35)
   lastName: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The birth date of the viewer',
+    type: 'string',
+    format: 'date',
+  })
   @IsDateString()
+  @MaxLength(10)
   birthDate: Date;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Gender of the seller',
+    enum: ['male', 'female'],
+  })
   @IsString()
   @IsIn(['male', 'female'])
   gender: string;

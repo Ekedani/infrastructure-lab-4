@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTicketDto, CreateTicketsDto } from './dto/create-tickets.dto';
+import { CreateTicketsDto } from './dto/create-tickets.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { Ticket } from './entities/ticket.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateTicketDto } from './dto/create-ticket.dto';
 
 @Injectable()
 export class TicketsService {
@@ -42,5 +43,22 @@ export class TicketsService {
   async remove(id: string) {
     const ticket = await this.findOne(id);
     return this.ticketRepository.remove(ticket);
+  }
+
+  async addToOrder(ticketId: string, orderId: string) {
+    const ticket = await this.findOne(ticketId);
+    if (ticket.orderId) {
+      throw new Error('Ticket already reserved');
+    }
+    ticket.orderId = orderId;
+    return this.ticketRepository.save(ticket);
+  }
+
+  async removeOrder(orderId: string) {
+    const tickets = await this.ticketRepository.find({ where: { orderId } });
+    tickets.forEach((ticket) => {
+      ticket.orderId = null;
+    });
+    return this.ticketRepository.save(tickets);
   }
 }

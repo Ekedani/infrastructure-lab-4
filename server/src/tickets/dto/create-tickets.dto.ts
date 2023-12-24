@@ -1,30 +1,14 @@
-import {
-  IsDateString,
-  IsInt,
-  IsString,
-  Length,
-  Max,
-  Min,
-} from 'class-validator';
+import { ValidateNested } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
-export class CreateTicketDto {
-  @ApiProperty()
-  @IsDateString()
-  startDatetime: Date;
-
-  @ApiProperty()
-  @IsInt()
-  @Min(1)
-  @Max(200)
-  seat: number;
-
-  @ApiProperty()
-  @IsString()
-  @Length(1, 255)
-  movieTitle: string;
-}
+import { Type } from 'class-transformer';
+import { CreateTicketDto } from './create-ticket.dto';
 
 export class CreateTicketsDto {
+  @ApiProperty({
+    description: 'The tickets to create',
+    type: [CreateTicketDto],
+  })
+  @ValidateNested({ each: true })
+  @Type(() => CreateTicketDto)
   tickets: CreateTicketDto[];
 }

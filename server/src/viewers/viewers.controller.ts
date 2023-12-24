@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ViewersService } from './viewers.service';
 import { CreateViewerDto } from './dto/create-viewer.dto';
@@ -28,17 +29,20 @@ export class ViewersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.viewersService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateViewerDto: UpdateViewerDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateViewerDto: UpdateViewerDto,
+  ) {
     return this.viewersService.update(id, updateViewerDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.viewersService.remove(id);
   }
 }
