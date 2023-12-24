@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+    postgres:
+        image: postgres:latest
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: ${SQL_DB_NAME}
+            POSTGRES_USER: ${SQL_DB_USERNAME}
+            POSTGRES_PASSWORD: ${SQL_DB_PASSWORD}
+        volumes:
+            - ipz_sql_data:/var/lib/postgresql/data
+
+    mongo:
+        image: mongo:latest
+        ports:
+            - "27017:27017"
+        environment:
+            MONGO_INITDB_DATABASE: ${NoSQL_DB_NAME}
+        volumes:
+            - ipz_nosql_data:/data/db
+            - ipz_nosql_config:/data/configdb
+  
+    server:
+        image: ekedani/ipz-lab-server:latest
+        ports:
+            - "80:3000"
+        environment:
+            MONGODB_URI: mongodb://mongo:27017/${NoSQL_DB_NAME}
+            DB_HOST: postgres
+            DB_PORT: 5432
+            DB_DATABASE: ${SQL_DB_NAME}
+            DB_USERNAME: ${SQL_DB_USERNAME}
+            DB_PASSWORD: ${SQL_DB_PASSWORD}
+        depends_on:
+            - postgres
+            - mongo
+volumes:
+    ipz_sql_data:
+    ipz_nosql_data:
+    ipz_nosql_config:
