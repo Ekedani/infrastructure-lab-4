@@ -1,3 +1,4 @@
+DROP TYPE IF EXISTS GenderEnum;
 CREATE TYPE GenderEnum AS ENUM ('male', 'female');
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -11,13 +12,15 @@ CREATE TABLE "viewer" (
 
 CREATE TABLE "order" (
                          id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-                         viewer_id UUID REFERENCES "viewer"(id)
+                         viewer_id UUID REFERENCES "viewer"(id),
+						 created_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "ticket" (
                           id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
                           order_id UUID REFERENCES "order"(id),
-                          start_datetime TIMESTAMP,
+                          starts_at TIMESTAMP,
                           seat INT,
-                          movie_title VARCHAR(255)
+                          movie_title VARCHAR(255),
+						  UNIQUE (starts_at, seat)
 );
