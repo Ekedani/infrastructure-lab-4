@@ -2,7 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import SellersComponent from "./sellers/SellersComponent";
 import TicketsComponent from "./tickets/TicketsComponent";
-import ViewersComponent from "./viewer/ViewerComponent";
+import ViewersComponent from "./viewer/ViewersComponent";
+import "./App.css";
+import Footer from "./footer/Footer";
 
 const App = () => {
   return (
@@ -22,11 +24,14 @@ const App = () => {
           </ul>
         </nav>
 
-        <Routes>
-          <Route path="/sellers" element={<SellersComponent />} />
-          <Route path="/tickets" element={<TicketsComponent />} />
-          <Route path="/viewers" element={<ViewersComponent />} />
-        </Routes>
+        <div className="container">
+          <Routes>
+            <Route path="/sellers" element={<SellersComponent />} />
+            <Route path="/tickets" element={<TicketsComponent />} />
+            <Route path="/viewers" element={<ViewersComponent />} />
+          </Routes>
+        </div>
+        <Footer />
       </div>
     </Router>
   );

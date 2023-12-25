@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:80/tickets";
+const API_URL = "http://localhost:8000/tickets";
 
 export const createTicket = (data: any) => axios.post(`${API_URL}`, data);
 export const getAllTickets = () => axios.get(`${API_URL}`);

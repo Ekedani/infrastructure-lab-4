@@ -1,43 +1,82 @@
 import React, { useState, useEffect } from "react";
 import * as TicketService from "./TicketService";
+import "./TicketsStyle.css";
 
-type Ticket = {
+interface Ticket {
   id: string;
   title: string;
-};
+}
 
 const TicketsComponent = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     TicketService.getAllTickets()
-      .then((response: any) => {
+      .then((response) => {
         setTickets(response.data);
-        setLoading(false);
+        setIsLoading(false);
       })
-      .catch((error: any) => {
-        console.error(error);
-        setError(error.message || "Failed to load tickets.");
-        setLoading(false);
+      .catch((err) => {
+        setError(err.message || "An error occurred while fetching tickets");
+        setIsLoading(false);
       });
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  const handleDelete = (id: string) => {
+    TicketService.deleteTicket(id)
+      .then(() => {
+        setTickets(tickets.filter((ticket) => ticket.id !== id));
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleUpdate = (id: string) => {
+    const updatedTitle = prompt("Enter new title for the ticket");
+    if (updatedTitle) {
+      TicketService.updateTicket(id, { title: updatedTitle })
+        .then(() => {
+          setTickets(
+            tickets.map((ticket) =>
+              ticket.id === id ? { ...ticket, title: updatedTitle } : ticket
+            )
+          );
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
+  if (isLoading) {
+    return <div className="loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="error">Error: {error}</div>;
   }
 
   return (
-    <div>
-      <h2>Tickets</h2>
-      <ul>
+    <div className="tickets-container">
+      <h2 className="tickets-title">Tickets</h2>
+      <ul className="tickets-list">
         {tickets.map((ticket) => (
-          <li key={ticket.id}>{ticket.title}</li>
+          <li key={ticket.id} className="ticket-item">
+            <span className="ticket-title">{ticket.title}</span>
+            <div className="ticket-actions">
+              <button
+                className="update-button"
+                onClick={() => handleUpdate(ticket.id)}
+              >
+                Update
+              </button>
+              <button
+                className="delete-button"
+                onClick={() => handleDelete(ticket.id)}
+              >
+                Delete
+              </button>
+            </div>
+          </li>
         ))}
       </ul>
     </div>
