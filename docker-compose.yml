@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-    postgres:
+    db_postgres:
         image: postgres:latest
         ports:
             - "5432:5432"
@@ -11,7 +11,7 @@ services:
         volumes:
             - ipz_sql_data:/var/lib/postgresql/data
 
-    mongo:
+    db_mongo:
         image: mongo:latest
         ports:
             - "27017:27017"
@@ -26,15 +26,29 @@ services:
         ports:
             - "80:3000"
         environment:
-            MONGODB_URI: mongodb://mongo:27017/${NoSQL_DB_NAME}
-            DB_HOST: postgres
+            MONGODB_URI: mongodb://db_mongo:27017/${NoSQL_DB_NAME}
+            DB_HOST: db_postgres
             DB_PORT: 5432
             DB_DATABASE: ${SQL_DB_NAME}
             DB_USERNAME: ${SQL_DB_USERNAME}
             DB_PASSWORD: ${SQL_DB_PASSWORD}
         depends_on:
-            - postgres
-            - mongo
+            - db_postgres
+            - db_mongo
+    migrate:
+        image: migrate/migrate
+        volumes:
+            - ./migrations:/migrations
+        command: [
+            "-path", 
+            "/migrations", 
+            "-database",  
+            "postgres://${SQL_DB_USERNAME}:${SQL_DB_PASSWORD}@db_postgres:5432/${SQL_DB_NAME}?sslmode=disable",
+            "up", 
+            "20231223163054"
+        ]
+        depends_on:
+            - db_postgres
 volumes:
     ipz_sql_data:
     ipz_nosql_data:
