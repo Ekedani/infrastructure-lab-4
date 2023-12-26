@@ -13,8 +13,6 @@ services:
 
     db_mongo:
         image: mongo:latest
-        ports:
-            - "27017:27017"
         environment:
             MONGO_INITDB_DATABASE: ${NoSQL_DB_NAME}
         volumes:
@@ -44,8 +42,7 @@ services:
             "/migrations", 
             "-database",  
             "postgres://${SQL_DB_USERNAME}:${SQL_DB_PASSWORD}@db_postgres:5432/${SQL_DB_NAME}?sslmode=disable",
-            "up", 
-            "20231223163054"
+            "up"
         ]
         depends_on:
             - db_postgres
