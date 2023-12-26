@@ -16,6 +16,7 @@ const ViewersComponent = () => {
     ViewerService.getAllViewers()
       .then((response) => {
         setViewers(response.data);
+        console.log(response.data);
         setIsLoading(false);
       })
       .catch((err) => {

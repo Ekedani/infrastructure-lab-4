@@ -17,18 +17,6 @@
   margin: 0;
 }
 
-.seller-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.3s;
-}
-
-.seller-item:last-child {
-  border-bottom: none;
-}
-
 .seller-item:hover {
   background-color: #f5f5f5;
 }
@@ -45,18 +33,13 @@
   font-weight: bold;
 }
 
-.seller-price {
-  font-size: 14px;
-  color: #666;
-  margin-left: 10px;
-}
-
 .seller-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  border-bottom: 1px solid #eee;
+  border: 1px solid #eee;
+  margin-top: 20px;
 }
 
 .seller-actions {
@@ -89,4 +72,29 @@ button:hover {
 
 button:focus {
   outline: none;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 8px 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
 }

@@ -16,6 +16,7 @@ const TicketsComponent = () => {
     TicketService.getAllTickets()
       .then((response) => {
         setTickets(response.data);
+        console.log(response.data);
         setIsLoading(false);
       })
       .catch((err) => {
