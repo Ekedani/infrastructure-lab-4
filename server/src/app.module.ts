@@ -9,6 +9,7 @@ import { Viewer } from './viewers/entities/viewer.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { Ticket } from './tickets/entities/ticket.entity';
 import { Order } from './tickets/entities/order.entity';
+import { ViewerImage } from './viewers/entities/viewer-image.entity';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { Order } from './tickets/entities/order.entity';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        entities: [Viewer, Ticket, Order],
+        entities: [Viewer, Ticket, Order, ViewerImage],
         namingStrategy: new SnakeNamingStrategy(),
       }),
     }),
