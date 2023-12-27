@@ -52,4 +52,22 @@ export class SellersService {
     }
     return seller.value;
   }
+
+  async getImage(id: string) {
+    const seller = await this.findOne(id);
+    if (!seller.image) {
+      throw new NotFoundException(`Image not found`);
+    }
+    return {
+      path: seller.image,
+      format: seller.imageFormat,
+    };
+  }
+
+  async updateImage(id: string, image: Express.Multer.File) {
+    const seller = await this.findOne(id);
+    seller.image = image.filename;
+    seller.imageFormat = image.mimetype;
+    await this.sellerModel.updateOne({ _id: id }, seller).exec();
+  }
 }

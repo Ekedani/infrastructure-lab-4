@@ -16,6 +16,12 @@ export class Seller {
     enum: ['male', 'female'],
   })
   gender: string;
+
+  @Prop({ required: false })
+  image: string;
+
+  @Prop({ required: false })
+  imageFormat: string;
 }
 
 export const SellerSchema = SchemaFactory.createForClass(Seller).set('toJSON', {
