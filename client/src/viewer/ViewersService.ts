@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/viewers";
+const API_URL = "http://localhost:3000/viewers";
 
 export const createViewer = (data: any) => axios.post(`${API_URL}`, data);
 export const getAllViewers = () => axios.get(`${API_URL}`);
