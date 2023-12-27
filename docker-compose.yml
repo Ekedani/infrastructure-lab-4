@@ -34,7 +34,7 @@ services:
     server:
         image: ekedani/ipz-lab-server:2.1
         ports:
-            - "80:3000"
+            - "3000:3000"
         volumes:
            - ipz_image_storage:/uploads
         environment:
@@ -48,6 +48,12 @@ services:
             - db_postgres
             - db_mongo
             
+    client:
+        image: ekedani/ipz-client	
+        ports:
+            - "80:80"
+        depends_on:
+            - server
 volumes:
     ipz_sql_data:
     ipz_nosql_data:
