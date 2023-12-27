@@ -32,9 +32,11 @@ services:
             - db_postgres
             
     server:
-        image: ekedani/ipz-lab-server:2.0
+        image: ekedani/ipz-lab-server:2.1
         ports:
             - "80:3000"
+        volumes:
+           - ipz_image_storage:/uploads
         environment:
             MONGODB_URI: mongodb://db_mongo:27017/${NoSQL_DB_NAME}
             DB_HOST: db_postgres
@@ -50,3 +52,4 @@ volumes:
     ipz_sql_data:
     ipz_nosql_data:
     ipz_nosql_config:
+    ipz_image_storage:
