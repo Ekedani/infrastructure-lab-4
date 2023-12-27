@@ -2,8 +2,6 @@ version: "3.8"
 services:
     db_postgres:
         image: postgres:latest
-        ports:
-            - "5432:5432"
         environment:
             POSTGRES_DB: ${SQL_DB_NAME}
             POSTGRES_USER: ${SQL_DB_USERNAME}
@@ -19,6 +17,20 @@ services:
             - ipz_nosql_data:/data/db
             - ipz_nosql_config:/data/configdb
   
+    migrate:
+        image: migrate/migrate
+        volumes:
+            - ./migrations:/migrations
+        command: [
+            "-path", 
+            "/migrations", 
+            "-database",  
+            "postgres://${SQL_DB_USERNAME}:${SQL_DB_PASSWORD}@db_postgres:5432/${SQL_DB_NAME}?sslmode=disable",
+            "up"
+        ]
+        depends_on:
+            - db_postgres
+            
     server:
         image: ekedani/ipz-lab-server:latest
         ports:
@@ -33,19 +45,7 @@ services:
         depends_on:
             - db_postgres
             - db_mongo
-    migrate:
-        image: migrate/migrate
-        volumes:
-            - ./migrations:/migrations
-        command: [
-            "-path", 
-            "/migrations", 
-            "-database",  
-            "postgres://${SQL_DB_USERNAME}:${SQL_DB_PASSWORD}@db_postgres:5432/${SQL_DB_NAME}?sslmode=disable",
-            "up"
-        ]
-        depends_on:
-            - db_postgres
+            
 volumes:
     ipz_sql_data:
     ipz_nosql_data:
